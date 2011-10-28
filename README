@@ -1,0 +1,4 @@
+This is a simple JS framework:
+  - store your data on client side
+  - simply add widgets
+  - uses jQuery, underscore.js
