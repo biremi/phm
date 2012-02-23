@@ -1,0 +1,13 @@
+//= require ./jaf/JAF.js
+//= require ./jaf/JAF.utils.js
+//= require ./jaf/JAF.log.js
+//= require ./jaf/JAF.app.js
+//= require ./jaf/JAF.ui.js
+//= require ./jaf/JAF.eventsDispatcher.js
+//= require ./jaf/JAF.comet.js
+//= require ./jaf/JAF.server.js
+//= require ./jaf/ui/JAF.ui.Element.js
+//= require ./jaf/ui/JAF.ui.CommonWidget.js
+//= require ./jaf/ui/JAF.ui.Control.js
+//= require ./jaf/ui/JAF.ui.Widget.js
+//= require_tree ./jaf/ui/library
