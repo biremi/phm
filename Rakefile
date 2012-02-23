@@ -1,5 +1,6 @@
 require 'rake'
 require 'sprockets'
+require 'jasmine'
 
 module RakeHelper
   ROOT_DIR      = File.expand_path(File.dirname(__FILE__))
@@ -20,7 +21,6 @@ task :build do
 end
 
 begin
-  require 'jasmine'
   load 'jasmine/tasks/jasmine.rake'
 rescue LoadError
   task :jasmine do
