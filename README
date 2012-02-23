@@ -1,4 +1,18 @@
-This is a simple JS framework:
-  - store your data on client side
-  - simply add widgets
-  - uses jQuery, underscore.js
+JAF - Just Another Framework
+
+This is a simple Coffeescript framework for building rich javascript Web applications:
+
+	- UI model:
+		- widgets,
+		    - have placeholde
+			- have context id
+		- library elements
+			- have placeholder
+			- simple view without context id
+
+		- automatic library elements creation (using ui-library tag)
+
+	- Events dispatching
+    - Behaviour driven logic:
+		Write your app logics using behaviours
+
