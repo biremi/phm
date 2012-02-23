@@ -2,7 +2,7 @@
  Library::Tab class
 ###
 (->
-  class Tab extends JAF.ui.Control
+  class Tab extends PHM.ui.Control
     parseProperties: (element) ->
       @text = $(element).attr('text')
       @label = $(element).attr('label')
@@ -16,5 +16,5 @@
       @bindClick()
 
   # framework initializing stuff
-  JAF.ui.registerLibraryElement("tab", Tab)
+  PHM.ui.registerLibraryElement("tab", Tab)
 )()

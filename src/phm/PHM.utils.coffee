@@ -1,9 +1,9 @@
 ###
-JAF.utils module
+PHM.utils module
 ###
 (->
   exports = this
-  self = exports.JAF.utils = {}
+  self = exports.PHM.utils = {}
   self.uniqIdShift = 0
 
   # Common class methods
@@ -19,5 +19,4 @@ JAF.utils module
     time = new Date()
     time.getTime() + "_" + self.uniqIdShift++
 
-  false
 )()

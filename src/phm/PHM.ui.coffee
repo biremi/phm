@@ -1,9 +1,9 @@
 ###
-JAF.ui module
+PHM.ui module
 ###
 (->
   exports = this
-  self = exports.JAF.ui = {
+  self = exports.PHM.ui = {
     Library: {}
   }
   self.enterKeyCode = 13
@@ -20,7 +20,7 @@ JAF.ui module
     if JST[viewPath]?
       JST[viewPath](params)
     else
-      JAF.throwException("ui", "missing template: #{viewPath}")
+      PHM.throwException("ui", "missing template: #{viewPath}")
 
   # Widgets methods
   self.appendView = (viewPath, placeholder, params) ->
@@ -45,8 +45,8 @@ JAF.ui module
     element
 
   getLibraryElementClass = (type) ->
-    elementClass = JAF.ui.Library[type]
-    JAF.throwException("ui", "invalid UI element type: #{type}") if !elementClass?
+    elementClass = PHM.ui.Library[type]
+    PHM.throwException("ui", "invalid UI element type: #{type}") if !elementClass?
     elementClass
 
 )()

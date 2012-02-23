@@ -2,7 +2,7 @@
  Library::Slider class
 ###
 (->
-  class Slider extends JAF.ui.Control
+  class Slider extends PHM.ui.Control
     @fireEventTimeout = 200
 
     parseProperties: (element) ->
@@ -113,5 +113,5 @@
     sliderWidth: ->
       @getChildElement('scrollbar').width()
 
-  JAF.ui.registerLibraryElement("slider", Slider)
+  PHM.ui.registerLibraryElement("slider", Slider)
 )()

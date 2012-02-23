@@ -1,9 +1,9 @@
 ###
-JAF.log module
+PHM.log module
 ###
 (->
   exports = this
-  self = exports.JAF.log = {}
+  self = exports.PHM.log = {}
 
   self.info = (message) ->
     logToConsole('info', message)

@@ -1,5 +1,5 @@
 ###
-JAF.ui.Widget class
+PHM.ui.Widget class
 ###
 (->
   exports = this
@@ -21,18 +21,18 @@ JAF.ui.Widget class
 
     # Widgets methods
     addWidget: (className, contextId, jsClass, params = null) ->
-      placeholder = JAF.ui.getSelector(jsClass, @elementId)
-      widget = JAF.app.addWidget(className, contextId, placeholder, params)
+      placeholder = PHM.ui.getSelector(jsClass, @elementId)
+      widget = PHM.app.addWidget(className, contextId, placeholder, params)
       @children.push(widget)
       widget
 
     addSingletonWidget: (className, jsClass, params = null) ->
-      placeholder = JAF.ui.getSelector(jsClass, @elementId)
-      widget = JAF.app.addSingletonWidget(className, placeholder, params)
+      placeholder = PHM.ui.getSelector(jsClass, @elementId)
+      widget = PHM.app.addSingletonWidget(className, placeholder, params)
     
     removeChildren: ->
       _(@children).each (childWidget) ->
-        JAF.app.removeWidget(childWidget.className, childWidget.contextId)
+        PHM.app.removeWidget(childWidget.className, childWidget.contextId)
 
     # Library methods
     addLibraryElements: () ->
@@ -46,18 +46,18 @@ JAF.ui.Widget class
       @createLibraryElement(name, type, placeholder)
 
     createLibraryElement: (name, type, placeholder) ->
-      element = JAF.ui.addLibraryElement(type, placeholder)
+      element = PHM.ui.addLibraryElement(type, placeholder)
       this[name] = element
       element.name = name
       element.parentWidget = this
 
     appendView: (jsClass, viewPath, params) ->
-      placeholder = JAF.ui.getSelector(jsClass, @elementId)
-      JAF.ui.appendView(viewPath, placeholder, params)
+      placeholder = PHM.ui.getSelector(jsClass, @elementId)
+      PHM.ui.appendView(viewPath, placeholder, params)
 
     # Events methods
     fireEvent: (eventName, data=null) ->
-      JAF.eventsDispatcher.handleWidgetEvent(this, eventName, data)
+      PHM.eventsDispatcher.handleWidgetEvent(this, eventName, data)
 
     # System helpers
     uniqueId: ->
@@ -69,11 +69,11 @@ JAF.ui.Widget class
 
   checkIfNameTaken = (widget, name) ->
     if widget[name]?
-      JAF.throwException("widget", "element with name: #{name} already taken in #{widget.elementId}")
+      PHM.throwException("widget", "element with name: #{name} already taken in #{widget.elementId}")
 
   # Common framework part
-  JAF.utils.include(Widget, JAF.ui.Element)
-  JAF.utils.include(Widget, JAF.ui.CommonWidget)
-  exports.JAF.ui.Widget = Widget
+  PHM.utils.include(Widget, PHM.ui.Element)
+  PHM.utils.include(Widget, PHM.ui.CommonWidget)
+  exports.PHM.ui.Widget = Widget
   false
 )()

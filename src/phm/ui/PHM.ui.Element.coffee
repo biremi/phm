@@ -1,9 +1,9 @@
 ###
-JAF.ui.Element module
+PHM.ui.Element module
 ###
 (->
   exports = this
-  exports.JAF.ui.Element =
+  exports.PHM.ui.Element =
     addClass: (name) ->
       $("##{@elementId}").addClass(name)
     removeClass: (name) ->

@@ -2,7 +2,7 @@
  Library::TextInput class
 ###
 (->
-  class TextInput extends JAF.ui.Control
+  class TextInput extends PHM.ui.Control
     parseProperties: (element) ->
       @defaultValue = $(element).attr('default')
       @template = $(element).attr('template')
@@ -66,7 +66,7 @@
     bindSubmit: (callback=null) ->
       input = @getChildElement('input')
       input.keypress (e) =>
-        if e.which is JAF.ui.enterKeyCode
+        if e.which is PHM.ui.enterKeyCode
           callback.call(@) if callback?
           @fireEvent("submit")
 
@@ -78,5 +78,5 @@
       @getChildElement('input').attr('disabled', false)
       super()
 
-  JAF.ui.registerLibraryElement("text_input", TextInput)
+  PHM.ui.registerLibraryElement("text_input", TextInput)
 )()

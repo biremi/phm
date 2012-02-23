@@ -1,11 +1,11 @@
 ###
-JAF.ui.Control class
+PHM.ui.Control class
 ###
 (->
   exports = this
   class Control
     constructor: (element) ->
-      @elementId = "#{@type}-#{JAF.utils.generateUniqId()}"
+      @elementId = "#{@type}-#{PHM.utils.generateUniqId()}"
       @parseProperties(element) if @parseProperties?
       @params = {}
 
@@ -17,15 +17,15 @@ JAF.ui.Control class
       @getElement().addClass(classes)
 
     fireEvent: (eventName, data=null) ->
-      JAF.eventsDispatcher.handleControlEvent(this, eventName, data)
+      PHM.eventsDispatcher.handleControlEvent(this, eventName, data)
 
     # System helpers
     uniqueId: ->
       "control-#{@parentWidget.className}-#{@parentWidget.contextId}-#{@name}"
 
   # Common framework part
-  JAF.utils.include(Control, JAF.ui.Element)
-  JAF.utils.include(Control, JAF.ui.CommonWidget)
-  exports.JAF.ui.Control = Control
+  PHM.utils.include(Control, PHM.ui.Element)
+  PHM.utils.include(Control, PHM.ui.CommonWidget)
+  exports.PHM.ui.Control = Control
   false
 )()

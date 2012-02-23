@@ -2,7 +2,7 @@
  Library::Label class
 ###
 (->
-  class Label extends JAF.ui.Control
+  class Label extends PHM.ui.Control
     # common control methods if needed goes here
     parseProperties: (element) ->
       @text = $(element).attr('text')
@@ -18,6 +18,6 @@
       @getElement().html(txt)
 
   # framework initializing stuff
-  JAF.ui.registerLibraryElement("label", Label)
+  PHM.ui.registerLibraryElement("label", Label)
   false
 )()

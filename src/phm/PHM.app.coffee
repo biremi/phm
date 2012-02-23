@@ -1,11 +1,11 @@
 ###
-JAF.app module
+PHM.app module
 ###
 (->
   exports = this
 
   # Init part
-  self = exports.JAF.app =
+  self = exports.PHM.app =
     widgetClasses: {}
     widgets: {}
     models: {}
@@ -67,6 +67,7 @@ JAF.app module
   self.getSingletonWidget = (className) ->
     self.widgets[className]
 
+
   # private
   createWidget = (className, contextId, params) ->
     widgetClass = self.widgetClasses[className]
@@ -75,22 +76,22 @@ JAF.app module
   checkWidgetClass = (className) ->
     widgetClass = self.widgetClasses[className]
     if !widgetClass?
-      JAF.throwException("widgetClass", "#{className} not found in application")
+      PHM.throwException("widgetClass", "#{className} not found in application")
 
   validateWidgetContext = (className, contextId) ->
     if !contextId?
-      JAF.throwException("widget", "can't add widget #{className} without contextId")
+      PHM.throwException("widget", "can't add widget #{className} without contextId")
     widgetClass = self.widgetClasses[className]
     widgetClass.validateContext(contextId) if widgetClass.validateContext?
 
   checkRegisteredWidget = (className, contextId) ->
     collection = self.widgets[className]
     if collection? and collection[contextId]?
-      JAF.throwException("widget", "#{className}, id: #{contextId} already registered in app")
+      PHM.throwException("widget", "#{className}, id: #{contextId} already registered in app")
 
   checkRegisteredSingletonWidget = (className) ->
     if self.widgets[className]?
-      JAF.throwException("widget", "singleton #{className} already registered in app")
+      PHM.throwException("widget", "singleton #{className} already registered in app")
 
   registerWidget = (widget, contextId) ->
     if !self.widgets[widget.className]?

@@ -1,11 +1,11 @@
 ###
-JAF.eventsDispatcher module
+PHM.eventsDispatcher module
 ###
 (->
   exports = this
-  self = exports.JAF.eventsDispatcher = {}
-  exports.JAF.events = self # short alias
-  eventsList = JAF.app.eventsList
+  self = exports.PHM.eventsDispatcher = {}
+  exports.PHM.events = self # short alias
+  eventsList = PHM.app.eventsList
 
   # public API
   self.fireAreaEvent = (eventName, data) ->
@@ -72,12 +72,12 @@ JAF.eventsDispatcher module
     "#{widgetClass}-#{controlName}-#{eventName}"
 
   handleEvent = (source, caller, name, data=null) ->
-    JAF.log.info "Event: caller: #{caller}, source: #{source}, data: #{data}, name: #{name}"
+    PHM.log.info "Event: caller: #{caller}, source: #{source}, data: #{data}, name: #{name}"
     handlers = getEventHandlers(source, name)
     handler.call(caller, data) for handler in handlers
 
   handleSimpleEvent = (source, name, data=null) ->
-    JAF.log.info "Simple event: source: #{source}, data: #{data}, name: #{name}"
+    PHM.log.info "Simple event: source: #{source}, data: #{data}, name: #{name}"
     handlers = getEventHandlers(source, name)
     handler.call(null, data) for handler in handlers
 

@@ -1,9 +1,9 @@
 ###
-JAF.ui.CommonWidget module
+PHM.ui.CommonWidget module
 ###
 (->
   exports = this
-  exports.JAF.ui.CommonWidget =
+  exports.PHM.ui.CommonWidget =
     renderView: () ->
       params = if @prepareRenderParams?
         @prepareRenderParams()
@@ -11,7 +11,7 @@ JAF.ui.CommonWidget module
         {}
       params.elementId = @elementId
       if @contextId? then params.contextId = @contextId
-      JAF.ui.renderView(@template || @viewPath, params)
+      PHM.ui.renderView(@template || @viewPath, params)
 
     getElement: ->
       $("##{@elementId}")
@@ -31,7 +31,7 @@ JAF.ui.CommonWidget module
     setFocus: ->
       setTimeout( =>
         @hasFocus = true
-        JAF.app.focusWidget = this
+        PHM.app.focusWidget = this
         @addClass('focus')
         @bindClick() unless @clickBinded?
       , 0)
@@ -42,7 +42,7 @@ JAF.ui.CommonWidget module
       @fireEvent("blur")
 
     getSelector: (jsClass) ->
-      JAF.ui.getSelector(jsClass, @elementId)
+      PHM.ui.getSelector(jsClass, @elementId)
 
     remove: ->
       @getElement().remove()

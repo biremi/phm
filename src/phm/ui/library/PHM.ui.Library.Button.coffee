@@ -2,7 +2,7 @@
  Library::Button class
 ###
 (->
-  class Button extends JAF.ui.Control
+  class Button extends PHM.ui.Control
     # common control methods if needed goes here
     parseProperties: (element) ->
       @defaultText = $(element).attr('text')
@@ -20,5 +20,5 @@
       @setChildElementText('text', text)
 
   # framework initializing stuff
-  JAF.ui.registerLibraryElement("button", Button)
+  PHM.ui.registerLibraryElement("button", Button)
 )()
