@@ -9,7 +9,7 @@ JST["test_widget"] = function (locals) {
     }
     with(locals || {}) {
         try {
-            var _$output="<div id=\"" + html_escape(elementId) + "\" class=\"ui-label\">" + "<span data-jsclass=\"child-widget\"></span></div>";
+            var _$output="<div class=\"ui-label\">" + "<span data-jsclass=\"child-widget\"></span></div>";
             return _$output;
         } catch (e) {
             return "\n<pre class='error'>" + html_escape(e.stack) + "</pre>\n";
@@ -26,7 +26,7 @@ JST["test_widget_library"] = function (locals) {
     }
     with(locals || {}) {
         try {
-            var _$output="<div id=\"" + html_escape(elementId) + "\" class=\"ui-label\">" + 
+            var _$output="<div class=\"ui-label\">" + 
                 "<uilibrary type=\"button\" name=\"button\" text=\"Button\" class=\"test-class\"></uilibrary></div>";
             return _$output;  } catch (e) {
                 return "\n<pre class='error'>" + html_escape(e.stack) + "</pre>\n";
@@ -43,7 +43,7 @@ JST["library/button"] = function (locals) {
     }
     with(locals || {}) {
         try {
-            var _$output="<div id=\"" + html_escape(elementId) + "\" class=\"button\">" + 
+            var _$output="<div class=\"button\">" + 
                 "<span data-jsclass=\"" + html_escape('text') + "\" class=\"text\">" + 
                 html_escape(text) + 
                 "</span></div>";

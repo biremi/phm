@@ -1,6 +1,7 @@
 require 'rake'
 require 'sprockets'
 require 'jasmine'
+require 'headless'
 
 module RakeHelper
   ROOT_DIR      = File.expand_path(File.dirname(__FILE__))
@@ -38,6 +39,16 @@ task :run_specs do
   RakeHelper.build_js('phm.js')
   RakeHelper.build_spec_files
   Rake::Task['jasmine:ci'].invoke
+end
+
+desc "Run specs"
+task :run_specs_headless do
+  RakeHelper.build_js('phm.js')
+  RakeHelper.build_spec_files
+  Headless.ly do
+    puts "Running Jasmine Headlessly"
+    Rake::Task['jasmine:ci'].invoke
+  end
 end
 
 begin

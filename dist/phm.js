@@ -823,11 +823,11 @@ PHM.ui.CommonWidget module
 
   exports.PHM.ui.CommonWidget = {
     renderView: function() {
-      var params;
+      var html, params;
       params = this.prepareRenderParams != null ? this.prepareRenderParams() : {};
-      params.elementId = this.elementId;
       if (this.contextId != null) params.contextId = this.contextId;
-      return PHM.ui.renderView(this.template || this.viewPath, params);
+      html = PHM.ui.renderView(this.template || this.viewPath, params);
+      return $("<p>").append($(html).attr('id', this.elementId)).html();
     },
     getElement: function() {
       return $("#" + this.elementId);

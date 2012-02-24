@@ -8,9 +8,9 @@ exports.PHM.ui.CommonWidget =
       @prepareRenderParams()
     else 
       {}
-    params.elementId = @elementId
     if @contextId? then params.contextId = @contextId
-    PHM.ui.renderView(@template || @viewPath, params)
+    html = PHM.ui.renderView(@template || @viewPath, params)
+    $("<p>").append($(html).attr('id', @elementId)).html()
 
   getElement: ->
     $("##{@elementId}")
