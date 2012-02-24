@@ -1,49 +1,47 @@
 ###
 PHM.ui.CommonWidget module
 ###
-(->
-  exports = this
-  exports.PHM.ui.CommonWidget =
-    renderView: () ->
-      params = if @prepareRenderParams?
-        @prepareRenderParams()
-      else 
-        {}
-      params.elementId = @elementId
-      if @contextId? then params.contextId = @contextId
-      PHM.ui.renderView(@template || @viewPath, params)
+exports = this
+exports.PHM.ui.CommonWidget =
+  renderView: () ->
+    params = if @prepareRenderParams?
+      @prepareRenderParams()
+    else 
+      {}
+    params.elementId = @elementId
+    if @contextId? then params.contextId = @contextId
+    PHM.ui.renderView(@template || @viewPath, params)
 
-    getElement: ->
-      $("##{@elementId}")
+  getElement: ->
+    $("##{@elementId}")
 
-    # Events methods
-    bindClick: (callback=null) ->
-      element = @getElement()
-      _this = this
-      element.click (event) ->
-        if !_this.isDisabled()
-          callback.call(_this) if callback?
-          _this.fireEvent("click")
-        if _this.hasFocus? and _this.hasFocus is true
-          event.stopPropagation()
-      @clickBinded = true
+  # Events methods
+  bindClick: (callback=null) ->
+    element = @getElement()
+    _this = this
+    element.click (event) ->
+      if !_this.isDisabled()
+        callback.call(_this) if callback?
+        _this.fireEvent("click")
+      if _this.hasFocus? and _this.hasFocus is true
+        event.stopPropagation()
+    @clickBinded = true
 
-    setFocus: ->
-      setTimeout( =>
-        @hasFocus = true
-        PHM.app.focusWidget = this
-        @addClass('focus')
-        @bindClick() unless @clickBinded?
-      , 0)
+  setFocus: ->
+    setTimeout( =>
+      @hasFocus = true
+      PHM.app.focusWidget = this
+      @addClass('focus')
+      @bindClick() unless @clickBinded?
+    , 0)
 
-    fireBlur: ->
-      @hasFocus = false
-      @removeClass('focus')
-      @fireEvent("blur")
+  fireBlur: ->
+    @hasFocus = false
+    @removeClass('focus')
+    @fireEvent("blur")
 
-    getSelector: (jsClass) ->
-      PHM.ui.getSelector(jsClass, @elementId)
+  getSelector: (jsClass) ->
+    PHM.ui.getSelector(jsClass, @elementId)
 
-    remove: ->
-      @getElement().remove()
-)()
+  remove: ->
+    @getElement().remove()

@@ -1,82 +1,80 @@
 ###
  Library::TextInput class
 ###
-(->
-  class TextInput extends PHM.ui.Control
-    parseProperties: (element) ->
-      @defaultValue = $(element).attr('default')
-      @template = $(element).attr('template')
-      @maxLength = $(element).attr('maxlength')
-      @predefinedValue = $(element).attr('value')
+class TextInput extends PHM.ui.Control
+  parseProperties: (element) ->
+    @defaultValue = $(element).attr('default')
+    @template = $(element).attr('template')
+    @maxLength = $(element).attr('maxlength')
+    @predefinedValue = $(element).attr('value')
 
-    prepareRenderParams: ->
-      {maxLength: @maxLength}
+  prepareRenderParams: ->
+    {maxLength: @maxLength}
 
-    postInit: ->
+  postInit: ->
+    @setDefaultValue()
+    if @predefinedValue? then @setValue(@predefinedValue)
+    @bindEvents()
+
+  bindEvents: ->
+    input = @getChildElement('input')
+    input.unbind()
+    @bindInputFocus(input)
+    @bindInputBlur(input)
+
+  bindInputFocus: (input) ->
+    input.focus =>
+      @removeDefaultValue()
+      @setFocus()
+
+  bindInputBlur: (input) ->
+    input.blur =>
       @setDefaultValue()
-      if @predefinedValue? then @setValue(@predefinedValue)
-      @bindEvents()
 
-    bindEvents: ->
-      input = @getChildElement('input')
-      input.unbind()
-      @bindInputFocus(input)
-      @bindInputBlur(input)
+  removeDefaultValue: ->
+    if @getChildElementValue('input') is @defaultValue
+      @setValue('')
+    @removeIdle()
 
-    bindInputFocus: (input) ->
-      input.focus =>
-        @removeDefaultValue()
-        @setFocus()
+  setDefaultValue: ->
+    if @getChildElementValue('input') is ''
+      @setChildElementValue('input', @defaultValue)
+      @setIdle()
 
-    bindInputBlur: (input) ->
-      input.blur =>
-        @setDefaultValue()
+  setValue: (value) ->
+    @setChildElementValue('input', value)
 
-    removeDefaultValue: ->
-      if @getChildElementValue('input') is @defaultValue
-        @setValue('')
-      @removeIdle()
+  getValue: ->
+    rawValue = @getChildElementValue('input')
+    value = $.trim(rawValue)
+    if value is @defaultValue then '' else value
 
-    setDefaultValue: ->
-      if @getChildElementValue('input') is ''
-        @setChildElementValue('input', @defaultValue)
-        @setIdle()
+  bindValueChange: (callback=null) ->
+    input = @getChildElement('input')
+    input.keydown =>
+      @processValueChange(callback)
 
-    setValue: (value) ->
-      @setChildElementValue('input', value)
+  processValueChange: (callback) ->
+    prevValue = @getValue()
+    setTimeout =>
+      if prevValue isnt @getValue()
+        callback.call(@) if callback?
+        @fireEvent("value_changed")
+    , 1
 
-    getValue: ->
-      rawValue = @getChildElementValue('input')
-      value = $.trim(rawValue)
-      if value is @defaultValue then '' else value
+  bindSubmit: (callback=null) ->
+    input = @getChildElement('input')
+    input.keypress (e) =>
+      if e.which is PHM.ui.enterKeyCode
+        callback.call(@) if callback?
+        @fireEvent("submit")
 
-    bindValueChange: (callback=null) ->
-      input = @getChildElement('input')
-      input.keydown =>
-        @processValueChange(callback)
+  disable: ->
+    @getChildElement('input').attr('disabled', true)
+    super()
 
-    processValueChange: (callback) ->
-      prevValue = @getValue()
-      setTimeout =>
-        if prevValue isnt @getValue()
-          callback.call(@) if callback?
-          @fireEvent("value_changed")
-      , 1
+  enable: ->
+    @getChildElement('input').attr('disabled', false)
+    super()
 
-    bindSubmit: (callback=null) ->
-      input = @getChildElement('input')
-      input.keypress (e) =>
-        if e.which is PHM.ui.enterKeyCode
-          callback.call(@) if callback?
-          @fireEvent("submit")
-
-    disable: ->
-      @getChildElement('input').attr('disabled', true)
-      super()
-
-    enable: ->
-      @getChildElement('input').attr('disabled', false)
-      super()
-
-  PHM.ui.registerLibraryElement("text_input", TextInput)
-)()
+PHM.ui.registerLibraryElement("text_input", TextInput)

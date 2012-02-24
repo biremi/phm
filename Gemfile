@@ -1,4 +1,5 @@
 source 'http://rubygems.org'
 gem 'rake'
+gem 'coffee-rails'
 gem 'sprockets'
 gem 'jasmine'
