@@ -35,6 +35,7 @@ end
 
 desc "Run specs"
 task :run_specs do
+  RakeHelper.build_js('phm.js')
   RakeHelper.build_spec_files
   Rake::Task['jasmine:ci'].invoke
 end

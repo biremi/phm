@@ -4,16 +4,16 @@ PHM.ui module
 exports = this
 self = exports.PHM.ui =
   Library: {}
+  SEARCH_ATTRIBUTE: "data-jsclass"
 
 self.enterKeyCode = 13
 self.escapeKeyCode = 27
 
 # Common methods
 self.getSelector = (jsClass, wrapperId = null) ->
-  if wrapperId?
-    $("##{wrapperId} [data-jsclass=#{jsClass}]")
-  else
-    $("[data-jsclass=#{jsClass}]")
+  selector = "[#{self.SEARCH_ATTRIBUTE}=#{jsClass}]"
+  selector = "##{wrapperId} #{selector}" if wrapperId?
+  $(selector)
 
 self.renderView = (viewPath, params) ->
   if JST[viewPath]?

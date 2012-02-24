@@ -52,7 +52,7 @@ exports.PHM.ui.Element =
   removeIdle: ->
     @removeClass('idle')
   getChildElement: (selector)->
-    $("##{@elementId} [data-jsclass=#{selector}]")
+    PHM.ui.getSelector(selector, @elementId)
   showChildElement: (selector)->
     @removeChildElementClass(selector, 'state-hidden')
   hideChildElement: (selector)->

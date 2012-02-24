@@ -1,5 +1,5 @@
 var JST = [];
-JST["spec/test_widget"] = function (locals) {
+JST["test_widget"] = function (locals) {
     function html_escape(text) {
         return (text + "").
             replace(/&/g, "&amp;").
@@ -16,7 +16,7 @@ JST["spec/test_widget"] = function (locals) {
         }
     }
 };
-JST["spec/test_widget_library"] = function (locals) {
+JST["test_widget_library"] = function (locals) {
     function html_escape(text) {
         return (text + "").
             replace(/&/g, "&amp;").

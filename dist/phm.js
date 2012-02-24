@@ -3,7 +3,11 @@
 
   exports = this;
 
-  if (!exports.PHM) self = exports.PHM = {};
+  if (!exports.PHM) {
+    self = exports.PHM = {
+      VERSION: '0.1'
+    };
+  }
 
   self.initBlurHandler = function() {
     return $(document).click(function() {
@@ -295,7 +299,8 @@ PHM.ui module
   exports = this;
 
   self = exports.PHM.ui = {
-    Library: {}
+    Library: {},
+    SEARCH_ATTRIBUTE: "data-jsclass"
   };
 
   self.enterKeyCode = 13;
@@ -303,12 +308,11 @@ PHM.ui module
   self.escapeKeyCode = 27;
 
   self.getSelector = function(jsClass, wrapperId) {
+    var selector;
     if (wrapperId == null) wrapperId = null;
-    if (wrapperId != null) {
-      return $("#" + wrapperId + " [data-jsclass=" + jsClass + "]");
-    } else {
-      return $("[data-jsclass=" + jsClass + "]");
-    }
+    selector = "[" + self.SEARCH_ATTRIBUTE + "=" + jsClass + "]";
+    if (wrapperId != null) selector = "#" + wrapperId + " " + selector;
+    return $(selector);
   };
 
   self.renderView = function(viewPath, params) {
@@ -766,7 +770,7 @@ PHM.ui.Element module
       return this.removeClass('idle');
     },
     getChildElement: function(selector) {
-      return $("#" + this.elementId + " [data-jsclass=" + selector + "]");
+      return PHM.ui.getSelector(selector, this.elementId);
     },
     showChildElement: function(selector) {
       return this.removeChildElementClass(selector, 'state-hidden');

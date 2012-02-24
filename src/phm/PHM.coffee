@@ -1,5 +1,7 @@
 exports = this
-self = exports.PHM = {} if !exports.PHM
+self = exports.PHM = {
+  VERSION: '0.1'
+} if !exports.PHM
 
 self.initBlurHandler = ->
   $(document).click ->

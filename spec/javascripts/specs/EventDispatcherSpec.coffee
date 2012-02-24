@@ -2,7 +2,7 @@ define_test_widget = (template_path) ->
   class TestWidget extends PHM.ui.Widget
     postInit: ->
       @bindClick()
-  PHM.app.registerWidgetClass('test_widget', TestWidget, "spec/#{template_path}")
+  PHM.app.registerWidgetClass('test_widget', TestWidget, template_path)
 
 clear_app_widgets = ->
   PHM.app.widgetClasses = {}
