@@ -71,7 +71,11 @@ controlEventName = (widgetClass, controlName, eventName) ->
   "#{widgetClass}-#{controlName}-#{eventName}"
 
 handleEvent = (source, caller, name, data=null) ->
-  PHM.log.info "Event: caller: #{caller}, source: #{source}, data: #{data}, name: #{name}"
+  message = "Event: caller: #{caller},
+                    source: #{source},
+                    data: #{data},
+                    name: #{name}"
+  PHM.log.info message
   handlers = getEventHandlers(source, name)
   handler.call(caller, data) for handler in handlers
 

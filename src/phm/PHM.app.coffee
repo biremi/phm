@@ -18,7 +18,7 @@ self = exports.PHM.app =
   focusWidget: null
 
 # Widgets methods
-# public            
+# public API
 self.hasWidget = (className, contextId) ->
   collection = self.widgets[className]
   collection? and collection[contextId]?
@@ -79,18 +79,21 @@ checkWidgetClass = (className) ->
 
 validateWidgetContext = (className, contextId) ->
   if !contextId?
-    PHM.throwException("widget", "can't add widget #{className} without contextId")
+    message = "can't add widget #{className} without contextId"
+    PHM.throwException("widget", message)
   widgetClass = self.widgetClasses[className]
   widgetClass.validateContext(contextId) if widgetClass.validateContext?
 
 checkRegisteredWidget = (className, contextId) ->
   collection = self.widgets[className]
   if collection? and collection[contextId]?
-    PHM.throwException("widget", "#{className}, id: #{contextId} already registered in app")
+    message = "#{className}, id: #{contextId} already registered in app"
+    PHM.throwException("widget", message)
 
 checkRegisteredSingletonWidget = (className) ->
   if self.widgets[className]?
-    PHM.throwException("widget", "singleton #{className} already registered in app")
+    message = "singleton #{className} already registered in app"
+    PHM.throwException("widget", message)
 
 registerWidget = (widget, contextId) ->
   if !self.widgets[widget.className]?

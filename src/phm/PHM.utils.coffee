@@ -7,7 +7,7 @@ self.uniqIdShift = 0
 
 # Common class methods
 self.extend = (obj, mixin) ->
-  obj[name] = method for name, method of mixin        
+  obj[name] = method for name, method of mixin
   obj
 
 self.include = (klass, mixin) ->

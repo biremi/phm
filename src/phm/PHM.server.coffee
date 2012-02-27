@@ -7,7 +7,7 @@ self = exports.PHM.server = {}
 ###
 Common API
 ###
-self.doPostCall = (params) -> 
+self.doPostCall = (params) ->
   PHM.server.doAJAXCall('POST', params)
 
 self.doPutCall = (params) ->

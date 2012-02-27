@@ -6,7 +6,7 @@ exports.PHM.ui.CommonWidget =
   renderView: () ->
     params = if @prepareRenderParams?
       @prepareRenderParams()
-    else 
+    else
       {}
     if @contextId? then params.contextId = @contextId
     html = PHM.ui.renderView(@template || @viewPath, params)

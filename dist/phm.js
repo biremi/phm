@@ -16,7 +16,7 @@
   };
 
   self.throwException = function(type, text) {
-    throw "PHM Exception (" + type + "): " + text;
+    throw new Error("PHM Exception (" + type + "): " + text);
   };
 
   self.processBlur = function() {
@@ -244,9 +244,10 @@ PHM.app module
   };
 
   validateWidgetContext = function(className, contextId) {
-    var widgetClass;
+    var message, widgetClass;
     if (!(contextId != null)) {
-      PHM.throwException("widget", "can't add widget " + className + " without contextId");
+      message = "can't add widget " + className + " without contextId";
+      PHM.throwException("widget", message);
     }
     widgetClass = self.widgetClasses[className];
     if (widgetClass.validateContext != null) {
@@ -255,16 +256,19 @@ PHM.app module
   };
 
   checkRegisteredWidget = function(className, contextId) {
-    var collection;
+    var collection, message;
     collection = self.widgets[className];
     if ((collection != null) && (collection[contextId] != null)) {
-      return PHM.throwException("widget", "" + className + ", id: " + contextId + " already registered in app");
+      message = "" + className + ", id: " + contextId + " already registered in app";
+      return PHM.throwException("widget", message);
     }
   };
 
   checkRegisteredSingletonWidget = function(className) {
+    var message;
     if (self.widgets[className] != null) {
-      return PHM.throwException("widget", "singleton " + className + " already registered in app");
+      message = "singleton " + className + " already registered in app";
+      return PHM.throwException("widget", message);
     }
   };
 
@@ -460,9 +464,10 @@ PHM.eventsDispatcher module
   };
 
   handleEvent = function(source, caller, name, data) {
-    var handler, handlers, _i, _len, _results;
+    var handler, handlers, message, _i, _len, _results;
     if (data == null) data = null;
-    PHM.log.info("Event: caller: " + caller + ", source: " + source + ", data: " + data + ", name: " + name);
+    message = "Event: caller: " + caller + ",                    source: " + source + ",                    data: " + data + ",                    name: " + name;
+    PHM.log.info(message);
     handlers = getEventHandlers(source, name);
     _results = [];
     for (_i = 0, _len = handlers.length; _i < _len; _i++) {
@@ -555,20 +560,23 @@ PHM.comet module
         PHM.log.info("Current socket.id: " + socket.socket.sessionid);
         PHM.log.info(socket);
         socket.on("connect", function() {
+          var message;
           self.sockets.push(socket.socket);
           self.transports.push(socket.socket.transport);
-          PHM.log.info("Connected to comet-server(" + socket.socket.sessionid + ")");
+          message = "Connected to comet-server(" + socket.socket.sessionid + ")";
+          PHM.log.info(message);
           return PHM.log.info(socket);
         });
         socket.on("message", function(msg) {
-          var nameWithData;
+          var message, nameWithData;
           PHM.log.info("SessionID: " + socket.socket.sessionid);
           PHM.log.info("Message(Q): " + msg);
           try {
             nameWithData = jQuery.parseJSON(msg);
             return PHM.comet.dispatchEvent(nameWithData[0], nameWithData[1]);
           } catch (e) {
-            PHM.log.error("ERROR evaluating frame body: " + e.name + ":" + e.message);
+            message = "ERROR evaluating frame body: " + e.name + ":" + e.message;
+            PHM.log.error(message);
             PHM.log.info(e);
             return PHM.log.info("on msg: " + msg);
           }
@@ -1023,8 +1031,10 @@ PHM.ui.Widget class
   };
 
   checkIfNameTaken = function(widget, name) {
+    var message;
     if (widget[name] != null) {
-      return PHM.throwException("widget", "element with name: " + name + " already taken in " + widget.elementId);
+      message = "element with name: " + name + " already taken in " + widget.elementId;
+      return PHM.throwException("widget", message);
     }
   };
 

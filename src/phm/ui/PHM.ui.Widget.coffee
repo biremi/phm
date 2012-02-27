@@ -28,7 +28,7 @@ class Widget
   addSingletonWidget: (className, jsClass, params = null) ->
     placeholder = PHM.ui.getSelector(jsClass, @elementId)
     widget = PHM.app.addSingletonWidget(className, placeholder, params)
-  
+
   removeChildren: ->
     _(@children).each (childWidget) ->
       PHM.app.removeWidget(childWidget.className, childWidget.contextId)
@@ -68,7 +68,8 @@ findLibraryElements = (element) ->
 
 checkIfNameTaken = (widget, name) ->
   if widget[name]?
-    PHM.throwException("widget", "element with name: #{name} already taken in #{widget.elementId}")
+    message = "element with name: #{name} already taken in #{widget.elementId}"
+    PHM.throwException("widget", message)
 
 # Common framework part
 PHM.utils.include(Widget, PHM.ui.Element)

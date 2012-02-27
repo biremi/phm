@@ -11,11 +11,11 @@ PHM.comet module
 
   self.dispatchEvent = (eventName, data) ->
     PHM.eventsDispatcher.handleCometEvent(eventName, data)
-  
+
   self.init = (host, port, channel) ->
     self.client = new PHM.comet.Client()
     self.client.connect(host, port, channel)
-  
+
   self.disconnect = ->
     PHM.log.info "started comet disconnection"
     try
@@ -54,7 +54,8 @@ PHM.comet module
       socket.on "connect", ->
         self.sockets.push socket.socket
         self.transports.push socket.socket.transport
-        PHM.log.info "Connected to comet-server(" + socket.socket.sessionid + ")"
+        message = "Connected to comet-server(" + socket.socket.sessionid + ")"
+        PHM.log.info message
         PHM.log.info socket
 
       socket.on "message", (msg) ->
@@ -64,7 +65,8 @@ PHM.comet module
           nameWithData = jQuery.parseJSON(msg)
           PHM.comet.dispatchEvent nameWithData[0], nameWithData[1]
         catch e
-          PHM.log.error "ERROR evaluating frame body: " + e.name + ":" + e.message
+          message = "ERROR evaluating frame body: " + e.name + ":" + e.message
+          PHM.log.error message
           PHM.log.info e
           PHM.log.info "on msg: " + msg
 

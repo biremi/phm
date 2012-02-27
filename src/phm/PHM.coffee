@@ -8,7 +8,7 @@ self.initBlurHandler = ->
     self.processBlur()
 
 self.throwException = (type, text) ->
-  throw "PHM Exception (#{type}): #{text}"
+  throw new Error("PHM Exception (#{type}): #{text}")
 
 self.processBlur = ->
   focusWidget = PHM.app.focusWidget

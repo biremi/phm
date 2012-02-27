@@ -6,7 +6,7 @@ exports.PHM.ui.Element =
   addClass: (name) ->
     $("##{@elementId}").addClass(name)
   removeClass: (name) ->
-    $("##{@elementId}").removeClass(name)  
+    $("##{@elementId}").removeClass(name)
   hasClass: (name) ->
     $("##{@elementId}").hasClass(name)
   addChildElementClass: (selector, name) ->

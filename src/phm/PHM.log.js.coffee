@@ -12,7 +12,7 @@ self.error = (message) ->
 
 logToConsole = (logLevel, message) ->
   ts = getTimestamp()
-  log = (obj) -> 
+  log = (obj) ->
     console[logLevel](obj)
   if typeof(message) == 'string'
     log("[#{ts}] #{message}")
