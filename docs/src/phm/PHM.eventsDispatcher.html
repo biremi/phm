@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>PHM.eventsDispatcher.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../resources/base.css" />
+  <link rel="stylesheet" media="all" href="../../resources/module.css" />
+</head>
+<body>
+  <header>
+    <h1>PHM.eventsDispatcher.coffee</h1>
+  </header>
+  <div id="content">
+    <div id="sidebar">
+      
+      
+      <h4>Functions</h4>
+      <ul class="functionlist">
+        
+        <li><a href="#self.fireAreaEvent">self.fireAreaEvent</a></li>
+        
+        <li><a href="#self.onArea">self.onArea</a></li>
+        
+        <li><a href="#self.onComet">self.onComet</a></li>
+        
+        <li><a href="#self.onWidget">self.onWidget</a></li>
+        
+        <li><a href="#self.onControl">self.onControl</a></li>
+        
+        <li><a href="#addCometEventHandler">addCometEventHandler</a></li>
+        
+        <li><a href="#addAreaEventHandler">addAreaEventHandler</a></li>
+        
+        <li><a href="#addWidgetEventHandler">addWidgetEventHandler</a></li>
+        
+        <li><a href="#addControlEventHandler">addControlEventHandler</a></li>
+        
+        <li><a href="#addEventHandler">addEventHandler</a></li>
+        
+        <li><a href="#handleAreaEvent">handleAreaEvent</a></li>
+        
+        <li><a href="#self.handleCometEvent">self.handleCometEvent</a></li>
+        
+        <li><a href="#self.handleWidgetEvent">self.handleWidgetEvent</a></li>
+        
+        <li><a href="#self.handleControlEvent">self.handleControlEvent</a></li>
+        
+        <li><a href="#getEventHandlers">getEventHandlers</a></li>
+        
+        <li><a href="#widgetEventName">widgetEventName</a></li>
+        
+        <li><a href="#controlEventName">controlEventName</a></li>
+        
+        <li><a href="#handleEvent">handleEvent</a></li>
+        
+        <li><a href="#handleSimpleEvent">handleSimpleEvent</a></li>
+        
+      </ul>
+      
+    </div>
+    <div id="main">
+      
+      <div id="module_docstring">
+        <p>PHM.eventsDispatcher module</p>
+      </div>
+      
+      
+      
+      <div id="functions">
+        <h2>Functions</h2>
+        
+        <div class="function">
+          <div class="header">
+            <a id="self.fireAreaEvent"><h3>self.fireAreaEvent(eventName, data)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="self.onArea"><h3>self.onArea(eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="self.onComet"><h3>self.onComet(eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="self.onWidget"><h3>self.onWidget(widgetClass, eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="self.onControl"><h3>self.onControl(widgetClass, controlName, eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="addCometEventHandler"><h3>addCometEventHandler(eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="addAreaEventHandler"><h3>addAreaEventHandler(eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="addWidgetEventHandler"><h3>addWidgetEventHandler(widgetClass, eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="addControlEventHandler"><h3>addControlEventHandler(widgetClass, controlName, eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="addEventHandler"><h3>addEventHandler(eventSource, eventName, handler)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="handleAreaEvent"><h3>handleAreaEvent(eventName, data)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="self.handleCometEvent"><h3>self.handleCometEvent(eventName, data)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="self.handleWidgetEvent"><h3>self.handleWidgetEvent(widget, eventName, data)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="self.handleControlEvent"><h3>self.handleControlEvent(control, eventName, data)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="getEventHandlers"><h3>getEventHandlers(eventSource, eventName)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="widgetEventName"><h3>widgetEventName(widgetClass, eventName)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="controlEventName"><h3>controlEventName(widgetClass, controlName, eventName)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="handleEvent"><h3>handleEvent(source, caller, name, data)</h3></a>
+          </div>
+          
+        </div>
+        
+        <div class="function">
+          <div class="header">
+            <a id="handleSimpleEvent"><h3>handleSimpleEvent(source, name, data)</h3></a>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</body>
+</html>
