@@ -17,6 +17,20 @@ self = exports.PHM.app =
     "control": {}
   focusWidget: null
 
+# General initailization/configuration stuff
+self.init = (options=null) ->
+  self.initBlurHandler()
+
+self.initBlurHandler = ->
+  $(document).click ->
+    self.processBlur()
+
+self.processBlur = ->
+  focusWidget = self.focusWidget
+  if focusWidget?
+    focusWidget.fireBlur()
+    self.focusWidget = null
+
 # Widgets methods
 # public API
 self.hasWidget = (className, contextId) ->

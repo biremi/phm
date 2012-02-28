@@ -4,20 +4,22 @@ PHM.ui module
 exports = this
 self = exports.PHM.ui =
   Library: {}
-  SEARCH_ATTRIBUTE: "data-jsclass"
+  searchAttribute: "data-jsclass"
+  templateStorage: -> JST
+  libraryTemplatePrefix: "library/"
 
 self.enterKeyCode = 13
 self.escapeKeyCode = 27
 
 # Common methods
 self.getSelector = (jsClass, wrapperId = null) ->
-  selector = "[#{self.SEARCH_ATTRIBUTE}=#{jsClass}]"
+  selector = "[#{self.searchAttribute}=#{jsClass}]"
   selector = "##{wrapperId} #{selector}" if wrapperId?
   $(selector)
 
 self.renderView = (viewPath, params) ->
-  if JST[viewPath]?
-    JST[viewPath](params)
+  if self.templateStorage()[viewPath]?
+    self.templateStorage()[viewPath](params)
   else
     PHM.throwException("ui", "missing template: #{viewPath}")
 
@@ -30,7 +32,7 @@ self.appendView = (viewPath, placeholder, params) ->
 self.registerLibraryElement = (type, elementClass, viewPath = null) ->
   self.Library[type] = elementClass
   elementClass::type = type
-  elementClass::viewPath = viewPath || "library/#{type}"
+  elementClass::viewPath = viewPath || "#{self.libraryTemplatePrefix}#{type}"
 
 self.addLibraryElement = (type, placeholder) ->
   element = createLibraryElement(type, placeholder)

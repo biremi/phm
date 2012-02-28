@@ -9,23 +9,8 @@
     };
   }
 
-  self.initBlurHandler = function() {
-    return $(document).click(function() {
-      return self.processBlur();
-    });
-  };
-
   self.throwException = function(type, text) {
     throw new Error("PHM Exception (" + type + "): " + text);
-  };
-
-  self.processBlur = function() {
-    var focusWidget;
-    focusWidget = PHM.app.focusWidget;
-    if (focusWidget != null) {
-      focusWidget.fireBlur();
-      return PHM.app.focusWidget = null;
-    }
   };
 
 }).call(this);
@@ -163,6 +148,26 @@ PHM.app module
       "control": {}
     },
     focusWidget: null
+  };
+
+  self.init = function(options) {
+    if (options == null) options = null;
+    return self.initBlurHandler();
+  };
+
+  self.initBlurHandler = function() {
+    return $(document).click(function() {
+      return self.processBlur();
+    });
+  };
+
+  self.processBlur = function() {
+    var focusWidget;
+    focusWidget = self.focusWidget;
+    if (focusWidget != null) {
+      focusWidget.fireBlur();
+      return self.focusWidget = null;
+    }
   };
 
   self.hasWidget = function(className, contextId) {
@@ -304,7 +309,11 @@ PHM.ui module
 
   self = exports.PHM.ui = {
     Library: {},
-    SEARCH_ATTRIBUTE: "data-jsclass"
+    searchAttribute: "data-jsclass",
+    templateStorage: function() {
+      return JST;
+    },
+    libraryTemplatePrefix: "library/"
   };
 
   self.enterKeyCode = 13;
@@ -314,14 +323,14 @@ PHM.ui module
   self.getSelector = function(jsClass, wrapperId) {
     var selector;
     if (wrapperId == null) wrapperId = null;
-    selector = "[" + self.SEARCH_ATTRIBUTE + "=" + jsClass + "]";
+    selector = "[" + self.searchAttribute + "=" + jsClass + "]";
     if (wrapperId != null) selector = "#" + wrapperId + " " + selector;
     return $(selector);
   };
 
   self.renderView = function(viewPath, params) {
-    if (JST[viewPath] != null) {
-      return JST[viewPath](params);
+    if (self.templateStorage()[viewPath] != null) {
+      return self.templateStorage()[viewPath](params);
     } else {
       return PHM.throwException("ui", "missing template: " + viewPath);
     }
@@ -337,7 +346,7 @@ PHM.ui module
     if (viewPath == null) viewPath = null;
     self.Library[type] = elementClass;
     elementClass.prototype.type = type;
-    return elementClass.prototype.viewPath = viewPath || ("library/" + type);
+    return elementClass.prototype.viewPath = viewPath || ("" + self.libraryTemplatePrefix + type);
   };
 
   self.addLibraryElement = function(type, placeholder) {
@@ -912,10 +921,6 @@ PHM.ui.Control class
       return PHM.eventsDispatcher.handleControlEvent(this, eventName, data);
     };
 
-    Control.prototype.uniqueId = function() {
-      return "control-" + this.parentWidget.className + "-" + this.parentWidget.contextId + "-" + this.name;
-    };
-
     return Control;
 
   })();
@@ -1016,10 +1021,6 @@ PHM.ui.Widget class
     Widget.prototype.fireEvent = function(eventName, data) {
       if (data == null) data = null;
       return PHM.eventsDispatcher.handleWidgetEvent(this, eventName, data);
-    };
-
-    Widget.prototype.uniqueId = function() {
-      return "widget-" + this.className + "-" + this.contextId;
     };
 
     return Widget;

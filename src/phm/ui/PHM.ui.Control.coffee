@@ -19,10 +19,6 @@ class Control
   fireEvent: (eventName, data=null) ->
     PHM.eventsDispatcher.handleControlEvent(this, eventName, data)
 
-  # System helpers
-  uniqueId: ->
-    "control-#{@parentWidget.className}-#{@parentWidget.contextId}-#{@name}"
-
 # Common framework part
 PHM.utils.include(Control, PHM.ui.Element)
 PHM.utils.include(Control, PHM.ui.CommonWidget)

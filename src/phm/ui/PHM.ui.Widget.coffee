@@ -58,10 +58,6 @@ class Widget
   fireEvent: (eventName, data=null) ->
     PHM.eventsDispatcher.handleWidgetEvent(this, eventName, data)
 
-  # System helpers
-  uniqueId: ->
-    "widget-#{@className}-#{@contextId}"
-
 # Helper methods
 findLibraryElements = (element) ->
   element.find('uilibrary')

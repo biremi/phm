@@ -9,22 +9,30 @@ module RakeHelper
   SPEC_DIR      = File.join(ROOT_DIR, 'spec')
   DIST_DIR      = File.join(ROOT_DIR, 'dist')
     
-  def self.build_js(file_name)
-    destination = File.join(DIST_DIR, file_name)
-    env = Sprockets::Environment.new
-    env.append_path SRC_DIR
-    open(destination, "w").write(env[file_name])
-  end
+  class << self
+    def build_js(file_name)
+      destination = File.join(DIST_DIR, file_name)
+      env = Sprockets::Environment.new
+      env.append_path SRC_DIR
+      open(destination, "w").write(env[file_name])
+    end
 
-  def self.build_spec_files
-    env = Sprockets::Environment.new
-    env.append_path SPEC_DIR
-    files = File.expand_path("**/*.coffee", SPEC_DIR)
-    Dir.glob(files).each do |srcfile|
-      srcfile = Pathname.new(srcfile)
-      destfile = srcfile.sub("specs", "generated").sub(".coffee", ".js")
-      FileUtils.mkdir_p(destfile.dirname)
-      File.open(destfile, "w").write(env[srcfile])
+    def build_spec_files
+      clear_generated_spec_files
+      env = Sprockets::Environment.new
+      env.append_path SPEC_DIR
+      files = File.expand_path("**/*.coffee", SPEC_DIR)
+      Dir.glob(files).each do |srcfile|
+        srcfile = Pathname.new(srcfile)
+        destfile = srcfile.sub("specs", "generated").sub(".coffee", ".js")
+        FileUtils.mkdir_p(destfile.dirname)
+        File.open(destfile, "w").write(env[srcfile])
+      end
+    end
+
+    private
+    def clear_generated_spec_files
+      FileUtils.rm_rf(File.join(SPEC_DIR, "javascripts/generated"))
     end
   end
 end
