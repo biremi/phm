@@ -89,58 +89,59 @@ Ex.
 **Widget methods**
 
 Widget constructor sets up instance attributes:
-`@contextId` - widget context identifier passed to constructor
-`@params` - passed params
+
+  `@contextId` - widget context identifier passed to constructor  
+  `@params` - passed params
 
 *prepareRenderParams*
 
-If you need to prepare render parameters for widget template before passing them to your
+- If you need to prepare render parameters for widget template before passing them to your
 template engine you should define `prepareRenderParams` method in
 widget class:
 
     
-    class MyWidget extends PHM.ui.Widget
-      prepareRenderParams: ->
-        params =
-          label: "#{@params.label}-#{@contextId}"
+        class MyWidget extends PHM.ui.Widget
+          prepareRenderParams: ->
+            params =
+              label: "#{@params.label}-#{@contextId}"
 
-    PHM.app.registerWidgetClass("my_widget_class_name", MyWidget)
+        PHM.app.registerWidgetClass("my_widget_class_name", MyWidget)
 
 
 *postInit*
 
-Defines any widget actions after rendering widget and adding it to
+- Defines any widget actions after rendering widget and adding it to
 application. For example adding child widgets (subwidgets):
 
 
-    class MyWidget extends PHM.ui.Widget
-      postInit: ->
-        @addSingletonWidget("my_child_widget", "child-widget-placeholder")
+        class MyWidget extends PHM.ui.Widget
+          postInit: ->
+            @addSingletonWidget("my_child_widget", "child-widget-placeholder")
 
-    PHM.app.registerWidgetClass("my_widget_class_name", MyWidget)
+        PHM.app.registerWidgetClass("my_widget_class_name", MyWidget)
 
 ### Common Element methods available for widgets:
 
 *getElement*
 
-Widget DOM object (jQuery element Object)
+- Widget DOM object (jQuery element Object)
 
 *bindClick(Function callback)*
 
-Defines widget as clickable and sets callback if needed.
+- Defines widget as clickable and sets callback if needed.
 This also sets up blur event handling for this widget.
 
 *enable*
 
-Enables click event handling. Removing class 'disabled'
+- Enables click event handling. Removing class 'disabled'
 
 *disable*
 
-Disables click event handling. Adding class 'disabled'
+- Disables click event handling. Adding class 'disabled'
 
 *getChildElement(String selector)*
 
-Getting child DOM element by searchAttribute value
+- Getting child DOM element by searchAttribute value
 
 ###Other common Element methods
 
@@ -158,13 +159,13 @@ application by checking:
 
 There are also some helper methods in PHM.app:
 
-**getWidget(String className, String contextId)**
+*getWidget(String className, String contextId)*
 
-get widget by className class and contextId
+- Get widget by className class and contextId
 
-**getSingletonWidget(String className)**
+*getSingletonWidget(String className)*
 
-get singleton widget by className
+- Get singleton widget by className
 
 Other methods:   
     `hasWidget(className, contextId)`, `removeWidget(className, contextId)`,
@@ -220,10 +221,10 @@ For example:
 
 Framework rendering pipeline searches for those elements and do the folowing:
 
-  - creates a library element (control) with specific type (attribute type is
+  - creates a library element (control) with specific type (attribute `type` is
     necessary)
   - renders control view and appends it to your widget view (DOM)
-  - sets widget.control-name to control object created (attribute name is
+  - sets widget.control-name to control object created (attribute `name` is
     necessary).
     
 In our example: widget.startButton will be set to PHM.ui.Library.Button
