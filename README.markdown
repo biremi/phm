@@ -1,4 +1,5 @@
 #PHM javascript framework documentation
+[![endorse](http://api.coderwall.com/biremi/endorsecount.png)](http://coderwall.com/biremi)
 #About
 This framework is a simple prototype framework for creating and managing rich JS web client apps
 ##Web Application structure
