@@ -475,7 +475,7 @@ PHM.eventsDispatcher module
   handleEvent = function(source, caller, name, data) {
     var handler, handlers, message, _i, _len, _results;
     if (data == null) data = null;
-    message = "Event: caller: " + caller + ",                    source: " + source + ",                    data: " + data + ",                    name: " + name;
+    message = "Event: caller: " + caller + ", source: " + source + ", data: " + data + ", name: " + name;
     PHM.log.info(message);
     handlers = getEventHandlers(source, name);
     _results = [];
