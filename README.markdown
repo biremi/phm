@@ -241,3 +241,74 @@ instance object. Rendered html will be:
 
 Additional <uilibrary> element attributes can be specified depending on
 Control implementation and API.
+
+**Widget describes:**
+
+  - It's context validation methods (if needed)
+
+    `@allowedContext` class method
+  - passed params presentation (with prepareRenderParams)
+  - manupulating child widgets (adding, removing only)
+  - manipulating child DOM elements (showing, hiding, adding, removing classes)
+
+**Widget should not include:**
+
+  - any jQuery finders, eventHandlers
+  - controls callbacks (all controls should be defined as library elements)
+  - direct manipulating other widgets
+
+##Behaviors
+
+Application logic should be separated from widgets logic:
+
+**Behaviors**
+
+   - describes widgets behaviors (calling widgets API methods) as respond to events 
+      + controls events handlers
+      + area events handlers
+
+**PHM.events methods**
+
+    onWidget (String widgetClass, String eventName, Function handler)
+- widget is passed as `this`
+
+    onControl (String widgetClass, String controlName, String eventName,
+    Function handler) ->
+- control is passed as `this`
+
+    Example:
+
+        PHM.events.onControl 'my_widget', 'startButton', 'click', ->
+          @parentWidget.startLoading()
+
+Here is an example or real application behavior:
+
+      PHM.events.onControl 'slider_input', 'amountInput', 'value_changed', ->
+        validateAmount(@parentWidget)
+
+      PHM.events.onControl 'slider_input', 'amountInput', 'blur', ->
+        validateAmount(@parentWidget)
+
+      PHM.events.onControl 'slider_input', 'amountSlider', 'value_changed', ->
+        @parentWidget.amountInput.setValue(@getValue())
+        validateAmount(@parentWidget)
+
+##Comet and area events
+
+ Comet event handler can be defined using:
+
+     PHM.events.onComet (String eventName, Function handler)
+
+
+ Commonly comet event handler are defined in separate modules which do the
+ following:
+    
+    - process comet event data (stores it on client side)
+    - fires area event (PHM.events.fireAreaEvent(String eventName, Object data))
+
+  Example:
+
+    PHM.comet.on "user-is-online", (data) ->
+      PHM.app.models.User.setUser(data)
+      PHM.events.fireAreaEvent("user-is-online", data)
+
