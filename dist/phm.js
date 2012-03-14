@@ -820,6 +820,16 @@ PHM.ui.Element module
       element = this.getChildElement(selector);
       return element != null ? element.val() : void 0;
     },
+    setChildElementHtml: function(selector, value) {
+      var element;
+      element = this.getChildElement(selector);
+      return element.html(value);
+    },
+    getChildElementHtml: function(selector) {
+      var element;
+      element = this.getChildElement(selector);
+      return element != null ? element.html() : void 0;
+    },
     emptyChildElement: function(selector) {
       var element;
       element = this.getChildElement(selector);

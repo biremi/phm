@@ -72,6 +72,12 @@ exports.PHM.ui.Element =
   getChildElementValue: (selector) ->
     element = @getChildElement(selector)
     element?.val()
+  setChildElementHtml: (selector, value) ->
+    element = @getChildElement(selector)
+    element.html(value)
+  getChildElementHtml: (selector) ->
+    element = @getChildElement(selector)
+    element?.html()
   emptyChildElement: (selector) ->
     element = @getChildElement(selector)
     element.empty()
