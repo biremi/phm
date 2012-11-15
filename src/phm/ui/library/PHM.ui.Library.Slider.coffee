@@ -1,114 +1,125 @@
 ###
  Library::Slider class
 ###
-class Slider extends PHM.ui.Control
-  @fireEventTimeout = 200
+(->
+  class Slider extends PHM.ui.Control
+    @fireEventTimeout = 200
 
-  parseProperties: (element) ->
-    @minValue = Number($(element).attr('minvalue'))
-    @maxValue = Number($(element).attr('maxvalue'))
+    parseProperties: (element) ->
+      @template = $(element).attr('template')
+      @minValue = Number($(element).attr('minvalue'))
+      @maxValue = Number($(element).attr('maxvalue'))
+      if $(element).attr('step')?
+        @step = Number($(element).attr('step'))
+      else
+        @step = 1
 
-  postInit: ->
-    @movedBuffer = 0
-    @updateTrackPosition()
-    @bindMouseUpDown()
-    @bindClick()
-
-  bindMouseUpDown: ->
-    handler = (event) => @trackMoveHandler(event)
-    @getChildElement('track').mousedown (event) =>
-      return if @isDisabled()
-      event.preventDefault()
+    postInit: ->
       @movedBuffer = 0
+      @updateTrackPosition()
+      @bindMouseUpDown()
+      @bindClick()
+
+    bindMouseUpDown: ->
+      handler = (event) => @trackMoveHandler(event)
+      @getChildElement('track').mousedown (event) =>
+        return if @isDisabled()
+        event.preventDefault()
+        @movedBuffer = 0
+        @saveLastTrackPosition(event)
+        @clickDisabled = true
+        $(document).mousemove(handler)
+
+      $(document).mouseup =>
+        $(document).unbind('mousemove', handler)
+        @clickDisabled = false
+
+    bindClick: ->
+      @getElement().click (event) =>
+        return if @isDisabled()
+        differenceX = @getTrackPositionDifference(event)
+        toMove = @moveOnClick(differenceX)
+        @onTrackPositionMoved(toMove)
+
+    trackMoveHandler: (event) ->
+      @movedBuffer += @getTrackPositionDifference(event)
       @saveLastTrackPosition(event)
-      @clickDisabled = true
-      $(document).mousemove(handler)
+      valueChange = @movedValue(@movedBuffer)
+      if Math.abs(valueChange) >= @step
+        @updateMovedBuffer(valueChange)
+        @onTrackPositionMoved(valueChange)
 
-    $(document).mouseup =>
-      $(document).unbind('mousemove', handler)
-      @clickDisabled = false
+    updateMovedBuffer: (valueChange) ->
+      move = Math.round(valueChange * @sliderWidth() / (@step * @valueInterval())) * @step
+      @movedBuffer -= move
 
-  bindClick: ->
-    @getElement().click (event) =>
-      return if @isDisabled()
-      toMove = event.pageX - @lastTrackPosition
-      normalizedToMove = @movedValue(-toMove)
-      @onTrackPositionMoved(normalizedToMove)
-      @saveLastTrackPosition(event)
-      console.log(@clickDisabled + ' click ' + event.offsetX + ' to move: ' + toMove)
+    updateTrackPosition: ->
+      @lastTrackPosition = @getChildElement('track').offset()?.left + 7
 
-  trackMoveHandler: (event) ->
-    @movedBuffer += @getTrackPositionDifference(event)
-    @saveLastTrackPosition(event)
-    valueChange = @movedValue(@movedBuffer)
-    if Math.abs(valueChange) >= 1
-      @updateMovedBuffer(valueChange)
-      @onTrackPositionMoved(valueChange)
+    saveLastTrackPosition: (event) ->
+      @lastTrackPosition = event.pageX
 
-  updateMovedBuffer: (valueChange) ->
-    move = Math.round(valueChange * @sliderWidth() / @valueInterval())
-    @movedBuffer -= move
+    getTrackPositionDifference: (event) ->
+      @lastTrackPosition - event.pageX
 
-  updateTrackPosition: ->
-    @lastTrackPosition = @getChildElement('track').offset()?.left + 7
+    onTrackPositionMoved: (valueChange)->
+      @setValue(@value - valueChange)
+      unless @moveEventFireTimer?
+        @moveEventFireTimer = setTimeout =>
+          @fireEvent('value_changed')
+          clearTimeout(@moveEventFireTimer)
+          delete @moveEventFireTimer
+        , Slider.fireEventTimeout
 
-  saveLastTrackPosition: (event) ->
-    @lastTrackPosition = event.pageX
+    setLimits: (min, max) ->
+      @minValue = Number(min)
+      @maxValue = Number(max)
 
-  getTrackPositionDifference: (event) ->
-    @lastTrackPosition - event.pageX
+    setValue: (value) ->
+      refinedValue = @refineValue(value)
+      @value = refinedValue
+      @setTrackPosition(refinedValue)
+      @setTooltipValue(refinedValue)
+      @updateTrackPosition()
 
-  onTrackPositionMoved: (valueChange)->
-    console.log('change: ' + valueChange)
-    @setValue(@getValue() - valueChange)
-    unless @moveEventFireTimer?
-      @moveEventFireTimer = setTimeout =>
-        @fireEvent('value_changed')
-        clearTimeout(@moveEventFireTimer)
-        delete @moveEventFireTimer
-      , Slider.fireEventTimeout
+    getValue: ->
+      @value
 
-  setLimits: (min, max) ->
-    @minValue = Number(min)
-    @maxValue = Number(max)
+    getTrackPosition: ->
+      position = @getChildElement('track').css('right')
+      Number(position.replace(/px/, ''))
 
-  setValue: (value) ->
-    refinedValue = @refineValue(value)
-    @setTrackPosition(refinedValue)
-    @setTooltipValue(refinedValue)
-    @updateTrackPosition()
+    setTrackPosition: (value) ->
+      completePercentage = @completePercentage(value)
+      @getChildElement('track').css('right', '-18px')
+      @getChildElement('completed').width("#{completePercentage}%")
 
-  getTrackPosition: ->
-    position = @getChildElement('track').css('right')
-    Number(position.replace(/px/, ''))
+    setTooltipValue: (value) ->
+      @setChildElementText('tooltip', value)
 
-  setTrackPosition: (value) ->
-    completePercentage = @completePercentage(value)
-    @getChildElement('track').css('right', '-8px')
-    @getChildElement('completed').width("#{completePercentage}%")
+    refineValue: (value) ->
+      refinedValue = value
+      refinedValue = @minValue if value < @minValue
+      refinedValue = @maxValue if value > @maxValue
+      refinedValue
 
-  setTooltipValue: (value) ->
-    @setChildElementText('tooltip', value)
+    valueInterval: ->
+      @maxValue - @minValue
 
-  refineValue: (value) ->
-    refinedValue = value
-    refinedValue = @minValue if value < @minValue
-    refinedValue = @maxValue if value > @maxValue
-    Math.round(refinedValue)
+    completePercentage: (value) ->
+      completePercentage = (value - @minValue) * 100 / @valueInterval()
 
-  valueInterval: ->
-    @maxValue - @minValue
+    movedValue: (moved) ->
+      Math.round(moved * @valueInterval() / (@step * @sliderWidth())) * @step
 
-  getValue: ->
-    @getChildElementText('tooltip')
+    moveOnClick: (difference) ->
+      if difference > 0
+        @step
+      else
+        -@step
 
-  completePercentage: (value) ->
-    completePercentage = (value - @minValue) * 100 / @valueInterval()
+    sliderWidth: ->
+      @getChildElement('scrollbar').width()
 
-  movedValue: (moved) ->
-    Math.round(moved * @valueInterval() / @sliderWidth())
-
-  sliderWidth: ->
-    @getChildElement('scrollbar').width()
-
-PHM.ui.registerLibraryElement("slider", Slider)
+  PHM.ui.registerLibraryElement("slider", Slider)
+)()

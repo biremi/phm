@@ -10,11 +10,33 @@ PHM.comet module
     PHM.eventsDispatcher.onComet(eventName, handler)
 
   self.dispatchEvent = (eventName, data) ->
-    PHM.eventsDispatcher.handleCometEvent(eventName, data)
+    if self.bufferEvents
+      self.addToBuffer(eventName, data)
+    else
+      self.handleCometEvent(eventName, data)
+
+  self.flushBuffer = ->
+    _(self.buffer).each (event) ->
+      try
+        self.handleCometEvent(event.name, event.data)
+      catch error
+        PHM.log.error(error)
+    self.bufferEvents = false
+
+  self.addToBuffer = (eventName, data) ->
+    PHM.log.info "buffered #{eventName}"
+    self.buffer.push(name: eventName, data: data)
+
+  self.handleCometEvent = (eventName, data) ->
+    setTimeout ->
+      PHM.eventsDispatcher.handleCometEvent(eventName, data)
+    , 0
 
   self.init = (host, port, channel) ->
     self.client = new PHM.comet.Client()
     self.client.connect(host, port, channel)
+    self.buffer = []
+    self.bufferEvents = true
 
   self.disconnect = ->
     PHM.log.info "started comet disconnection"
@@ -34,8 +56,10 @@ PHM.comet module
       @transports = []
 
     connect: (host, port, channel) ->
-      portPart = (if Number(port) is 80 then "" else ":#{port}")
-      url = "http://#{host}#{portPart}"
+      port = Number(port)
+      portPart = (if port is 80 or port is 443 then "" else ":#{port}")
+      protoPart = (if port is 443 then "https:" else "http:")
+      url = "#{protoPart}//#{host}#{portPart}"
       PHM.log.info "Comet url:#{url}"
       if typeof io is "undefined"
         PHM.log.error "Comet isn't activated"
@@ -54,8 +78,7 @@ PHM.comet module
       socket.on "connect", ->
         self.sockets.push socket.socket
         self.transports.push socket.socket.transport
-        message = "Connected to comet-server(" + socket.socket.sessionid + ")"
-        PHM.log.info message
+        PHM.log.info "Connected to comet-server(" + socket.socket.sessionid + ")"
         PHM.log.info socket
 
       socket.on "message", (msg) ->
@@ -65,10 +88,11 @@ PHM.comet module
           nameWithData = jQuery.parseJSON(msg)
           PHM.comet.dispatchEvent nameWithData[0], nameWithData[1]
         catch e
-          message = "ERROR evaluating frame body: " + e.name + ":" + e.message
-          PHM.log.error message
+          PHM.log.error "ERROR evaluating frame body: " + e.name + ":" + e.message
           PHM.log.info e
           PHM.log.info "on msg: " + msg
+          #TODO: add airbrake support
+          #PHM.common.deliverFrameException e, msg
 
       socket.on "reconnect", ->
         PHM.log.info "Comet: Reconnected to the server"

@@ -1,82 +1,87 @@
 ###
 PHM.eventsDispatcher module
 ###
-exports = this
-self = exports.PHM.eventsDispatcher = {}
-exports.PHM.events = self # short alias
-eventsList = PHM.app.eventsList
+(->
+  exports = this
+  self = exports.PHM.eventsDispatcher = {}
+  exports.PHM.events = self # short alias
+  eventsList = PHM.app.eventsList
 
-# public API
-self.fireAreaEvent = (eventName, data) ->
-  handleAreaEvent(eventName, data)
+  # public API
+  self.fireAreaEvent = (eventName, data) ->
+    handleAreaEvent(eventName, data)
 
-self.onArea = (eventName, handler) ->
-  addAreaEventHandler(eventName, handler)
+  self.fireCometEvent = (eventName, data) ->
+    self.handleCometEvent(eventName, data)
 
-self.onComet = (eventName, handler) ->
-  addCometEventHandler(eventName, handler)
+  self.onArea = (eventName, handler) ->
+    addAreaEventHandler(eventName, handler)
 
-self.onWidget = (widgetClass, eventName, handler) ->
-  addWidgetEventHandler(widgetClass, eventName, handler)
+  self.onComet = (eventName, handler) ->
+    addCometEventHandler(eventName, handler)
 
-self.onControl = (widgetClass, controlName, eventName, handler) ->
-  addControlEventHandler(widgetClass, controlName, eventName, handler)
+  self.onWidget = (widgetClass, eventName, handler) ->
+    addWidgetEventHandler(widgetClass, eventName, handler)
 
-# eventsList part
-addCometEventHandler = (eventName, handler) ->
-  addEventHandler("comet", eventName, handler)
+  self.onControl = (widgetClass, controlName, eventName, handler) ->
+    addControlEventHandler(widgetClass, controlName, eventName, handler)
 
-addAreaEventHandler = (eventName, handler) ->
-  addEventHandler("area", eventName, handler)
+  # eventsList part
+  addCometEventHandler = (eventName, handler) ->
+    addEventHandler("comet", eventName, handler)
 
-addWidgetEventHandler = (widgetClass, eventName, handler) ->
-  eventFullName = widgetEventName(widgetClass, eventName)
-  addEventHandler("widget", eventFullName, handler)
+  addAreaEventHandler = (eventName, handler) ->
+    addEventHandler("area", eventName, handler)
 
-addControlEventHandler = (widgetClass, controlName, eventName, handler) ->
-  eventFullName = "#{widgetClass}-#{controlName}-#{eventName}"
-  addEventHandler("control", eventFullName, handler)
+  addWidgetEventHandler = (widgetClass, eventName, handler) ->
+    eventFullName = widgetEventName(widgetClass, eventName)
+    addEventHandler("widget", eventFullName, handler)
 
-addEventHandler = (eventSource, eventName, handler) ->
-  handlers = getEventHandlers(eventSource, eventName)
-  if _(handlers).size() is 0
-    eventsList[eventSource][eventName] = [handler]
-  else
-    handlers.push(handler)
+  addControlEventHandler = (widgetClass, controlName, eventName, handler) ->
+    eventFullName = "#{widgetClass}-#{controlName}-#{eventName}"
+    addEventHandler("control", eventFullName, handler)
 
-# Event handlers part
-handleAreaEvent = (eventName, data) ->
-  handleSimpleEvent("area", eventName, data)
+  addEventHandler = (eventSource, eventName, handler) ->
+    handlers = getEventHandlers(eventSource, eventName)
+    if _(handlers).size() is 0
+      eventsList[eventSource][eventName] = [handler]
+    else
+      handlers.push(handler)
 
-self.handleCometEvent = (eventName, data) ->
-  handleSimpleEvent("comet", eventName, data)
+  # Event handlers part
+  handleAreaEvent = (eventName, data) ->
+    handleSimpleEvent("area", eventName, data)
 
-self.handleWidgetEvent = (widget, eventName, data) ->
-  eventFullName = widgetEventName(widget.className, eventName)
-  handleEvent("widget", widget, eventFullName, data)
+  self.handleCometEvent = (eventName, data) ->
+    handleSimpleEvent("comet", eventName, data)
 
-self.handleControlEvent = (control, eventName, data) ->
-  widgetClass = control.parentWidget.className
-  eventFullName = controlEventName(widgetClass, control.name, eventName)
-  handleEvent("control", control, eventFullName, data)
+  self.handleWidgetEvent = (widget, eventName, data) ->
+    eventFullName = widgetEventName(widget.className, eventName)
+    handleEvent("widget", widget, eventFullName, data)
 
-# Private methods
-getEventHandlers = (eventSource, eventName) ->
-  eventsList[eventSource][eventName] || []
+  self.handleControlEvent = (control, eventName, data) ->
+    widgetClass = control.parentWidget.className
+    eventFullName = controlEventName(widgetClass, control.name, eventName)
+    handleEvent("control", control, eventFullName, data)
 
-widgetEventName = (widgetClass, eventName) ->
-  "#{widgetClass}-#{eventName}"
+  # Private methods
+  getEventHandlers = (eventSource, eventName) ->
+    eventsList[eventSource][eventName] || []
 
-controlEventName = (widgetClass, controlName, eventName) ->
-  "#{widgetClass}-#{controlName}-#{eventName}"
+  widgetEventName = (widgetClass, eventName) ->
+    "#{widgetClass}-#{eventName}"
 
-handleEvent = (source, caller, name, data=null) ->
-  message = "Event: caller: #{caller}, source: #{source}, data: #{data}, name: #{name}"
-  PHM.log.info message
-  handlers = getEventHandlers(source, name)
-  handler.call(caller, data) for handler in handlers
+  controlEventName = (widgetClass, controlName, eventName) ->
+    "#{widgetClass}-#{controlName}-#{eventName}"
 
-handleSimpleEvent = (source, name, data=null) ->
-  PHM.log.info "Simple event: source: #{source}, data: #{data}, name: #{name}"
-  handlers = getEventHandlers(source, name)
-  handler.call(null, data) for handler in handlers
+  handleEvent = (source, caller, name, data=null) ->
+    PHM.log.info "Event: caller: #{caller}, source: #{source}, data: #{data}, name: #{name}"
+    handlers = getEventHandlers(source, name)
+    handler.call(caller, data) for handler in handlers
+
+  handleSimpleEvent = (source, name, data=null) ->
+    PHM.log.info "Simple event: source: #{source}, data: #{data}, name: #{name}"
+    handlers = getEventHandlers(source, name)
+    handler.call(null, data) for handler in handlers
+
+)()
